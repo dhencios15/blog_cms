@@ -1,102 +1,124 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <title>Laravel</title>
+@extends('layouts.blog')
+@section('title')
+  Saas Blog
+@endsection
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+@section('header')
+   <!-- Header -->
+   <header class="header text-center text-white" style="background-image: linear-gradient(-225deg, #5D9FFF 0%, #B8DCFF 48%, #6BBBFF 100%);">
+    <div class="container">
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
+      <div class="row">
+        <div class="col-md-8 mx-auto">
 
-            .full-height {
-                height: 100vh;
-            }
+          <h1>Latest Blog Posts</h1>
+          <p class="lead-2 opacity-90 mt-6">Read and get updated on how we progress</p>
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+        </div>
+      </div>
 
-            .position-ref {
-                position: relative;
-            }
+    </div>
+  </header><!-- /.header -->
+@endsection
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
+@section('content')
+     <!-- Main Content -->
+     <main class="main-content">
+      <div class="section bg-gray">
         <div class="container">
-            <div class="flex-center">
-                @if (Route::has('login'))
-                    <div class="top-right links">
-                        @auth
-                            <a href="{{ url('/home') }}">Home</a>
-                        @else
-                            <a href="{{ route('login') }}">Login</a>
-    
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}">Register</a>
-                            @endif
-                        @endauth
-                    </div>
-                @endif
-            </div>
-        </div>
-    
+          <div class="row">
 
-        <div class="content container">
-            <div class="row">
-                <div class="col-md-4 mb-5">
-                    <div class="card">
-                        <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/43.jpg" alt="Card image cap">
-                        <div class="card-body">
-                          <h4 class="card-title"><a>Card title</a></h4>
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                            content.</p>
-                          <a href="#" class="btn btn-primary">See More</a>
-                        </div>
-                      </div>
+
+            <div class="col-md-8 col-xl-9">
+              <div class="row gap-y">
+
+                @foreach ($posts as $post)
+                <div class="col-md-6">
+                  <div class="card border hover-shadow-6 mb-6 d-block">
+                    <a href="{{ route('blog.show', $post->id) }}"><img class="card-img-top" src="{{ asset('storage/' . $post->image) }}" alt="Card image cap"></a>
+                    <div class="p-6 text-center">
+                      <p><a class="small-5 text-lighter text-uppercase ls-2 fw-400" href="#">{{ $post->category->name }} </a></p>
+                    <h5 class="mb-0"><a class="text-dark" href="{{ route('blog.show', $post->id) }}">{{   $post->title   }} </a></h5>
+                    </div>
+                  </div>
                 </div>
+                @endforeach
+
+              </div>
+
+
+              <nav class="flexbox mt-30">
+                <a class="btn btn-white disabled"><i class="ti-arrow-left fs-9 mr-4"></i> Newer</a>
+                <a class="btn btn-white" href="#">Older <i class="ti-arrow-right fs-9 ml-4"></i></a>
+              </nav>
             </div>
+
+
+
+            <div class="col-md-4 col-xl-3">
+              <div class="sidebar px-4 py-md-0">
+
+                <h6 class="sidebar-title">Search</h6>
+                <form class="input-group" target="#" method="GET">
+                  <input type="text" class="form-control" name="s" placeholder="Search">
+                  <div class="input-group-addon">
+                    <span class="input-group-text"><i class="ti-search"></i></span>
+                  </div>
+                </form>
+
+                <hr>
+
+                <h6 class="sidebar-title">Categories</h6>
+                <div class="row link-color-default fs-14 lh-24">
+                  @foreach ($categories as $category)
+                  <div class="col-6">
+                    <a href="#">
+                      {{ $category->name }}
+                    </a>
+                  </div>
+                  
+                  @endforeach
+                </div>
+
+                {{-- <hr>
+
+                <h6 class="sidebar-title">Top posts</h6>
+                <a class="media text-default align-items-center mb-5" href="blog-single.html">
+                  <img class="rounded w-65px mr-4" src="../assets/img/thumb/4.jpg">
+                  <p class="media-body small-2 lh-4 mb-0">Thank to Maryam for joining our team</p>
+                </a>
+
+                <a class="media text-default align-items-center mb-5" href="blog-single.html">
+                  <img class="rounded w-65px mr-4" src="../assets/img/thumb/3.jpg">
+                  <p class="media-body small-2 lh-4 mb-0">Best practices for minimalist design</p>
+                </a>
+
+                <a class="media text-default align-items-center mb-5" href="blog-single.html">
+                  <img class="rounded w-65px mr-4" src="../assets/img/thumb/5.jpg">
+                  <p class="media-body small-2 lh-4 mb-0">New published books for product designers</p>
+                </a>
+
+                <a class="media text-default align-items-center mb-5" href="blog-single.html">
+                  <img class="rounded w-65px mr-4" src="../assets/img/thumb/2.jpg">
+                  <p class="media-body small-2 lh-4 mb-0">Top 5 brilliant content marketing strategies</p>
+                </a> --}}
+
+                <hr>
+
+                <h6 class="sidebar-title">Tags</h6>
+                <div class="gap-multiline-items-1">
+                  @foreach ($tags as $tag)
+                  <a class="badge badge-secondary" href="#"> {{ $tag->name }} </a>
+                  @endforeach                  
+                </div>
+
+                <hr>
+
+              </div>
+            </div>
+
+          </div>
         </div>
-    </body>
-</html>
+      </div>
+    </main>
+@endsection
