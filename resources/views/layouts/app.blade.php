@@ -58,6 +58,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('users.edit-profile') }}">
+                                        My Profile
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -88,6 +91,13 @@
             <div class="row">
                 <div class="col-md-2">
                     <ul class="list-group">
+                        @if (auth()->user()->isAdmin())
+                        <li class="list-group-item">
+                            <a href="{{ route('users.index') }}">
+                                Users
+                            </a>    
+                        </li>
+                        @endif
                         <li class="list-group-item">
                             <a href="{{ route('posts.index') }}">Post</a>
                         </li>
