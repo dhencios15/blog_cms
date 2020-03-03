@@ -16,7 +16,8 @@ class Post extends Model
         'content',
         'image',
         'publish_at',
-        'category_id'
+        'category_id',
+        'user_id'
     ];
     /**
      * Delete post image from stroage
@@ -43,5 +44,10 @@ class Post extends Model
     public function hasTag($tagId)
     {
         return in_array($tagId, $this->tags->pluck('id')->toArray());
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
